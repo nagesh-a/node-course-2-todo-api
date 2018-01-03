@@ -1,5 +1,6 @@
 // const MongoClient = require("mongodb").MongoClient;
-
+// to start mongodb on command prompt
+// ./mongod --dbpath /Users/nandral/nags/mongo-data
 const { MongoClient, ObjectID } = require("mongodb"); // destructuring
 //console.log("ObjectID.......", ObjectID);
 

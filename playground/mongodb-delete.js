@@ -21,6 +21,67 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
   }
   console.log("connected to MongoDB Server");
 
+  //deleteOne
+  //findOneAndDelete
+  /*{
+    "_id" : ObjectId("5a4c71df3b4561ea5e9c522e"),
+    "text" : "Walk the dog",
+    "completed" : false
+} */
+  // deleteMany
+  /*
+  db
+    .collection("Todos")
+    .deleteMany({ text: "Eat lunch" })
+    .then(result => {
+      console.log("-------result-------", result);
+    });
+
+*/
+  /*
+  db
+    .collection("Todos")
+    .deleteOne({ text: "Walk the dog" })
+    .then(result => {
+      console.log("-------result-------", result);
+      console.log("-------done-------");
+    });
+  */
+
+  // find one delete // delete the first match
+  /*
+  db
+    .collection("Todos")
+    .findOneAndDelete({ completed: false })
+    .then(result => {
+      console.log("-------result-------");
+      console.log(result);
+      console.log("-------done-------");
+    });
+*/
+
+  // deleteMany
+  /*
+  db
+    .collection("Users")
+    .deleteMany({ name: "Mahesh Babu" })
+    .then(result => {
+      console.log("-------result-------");
+      console.log(result);
+      console.log("-------result-------");
+    });
+*/
+  //    "_id" : ObjectId("5a4c3d793b4561ea5e9c4ec7"),
+
+  db
+    .collection("Todos")
+    .findOneAndDelete({ _id: new ObjectID("5a4c3d793b4561ea5e9c4ec7") })
+    .then(result => {
+      console.log("-------result-------");
+      console.log(result);
+      console.log("-------done-------");
+    });
+
   /*
   db
     .collection("Todos")
@@ -54,8 +115,8 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
         console.log("Error occured while accessing Todos");
       }
     ); // returns a cursor, we can convert it to array by calling toArray on it
+    Mahesh BabuMahesh Babu
 
-*/
   console.log("---------- Before Users Query-------------");
   db
     .collection("Users")
@@ -78,4 +139,5 @@ MongoClient.connect("mongodb://localhost:27017/TodoApp", (err, db) => {
   //2 bytes process id
   //3 bytes counter
   //rest random value
+  */
 });
