@@ -25,11 +25,22 @@ app.post("/todos", (req, res) => {
   console.log("req.body.......", req.body);
 });
 
+app.get("/todos", (req, res) => {
+  Todo.find().then(
+    todos => {
+      res.send({ todos });
+    },
+    error => {
+      res.status(400).send(error);
+    }
+  );
+});
+
 app.listen(3000, () => {
   console.log("Started on Port 3000....");
 });
 
-module.exports = {app};
+module.exports = { app };
 /*
 
 // command for seting up test dependencies
