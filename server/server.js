@@ -19,7 +19,7 @@ app.post("/todos", (req, res) => {
     },
     error => {
       res.status(400).send(error);
-      console.log("error...:", error);
+      // console.log("error...:", error);
     }
   );
   console.log("req.body.......", req.body);
@@ -28,8 +28,12 @@ app.post("/todos", (req, res) => {
 app.listen(3000, () => {
   console.log("Started on Port 3000....");
 });
+
+module.exports = {app};
 /*
 
+// command for seting up test dependencies
+//npm i expect@1.20.2 mocha@3.0.2 nodemon@1.10.2 supertest@2.0.0 --save-dev
 */
 /*
 
