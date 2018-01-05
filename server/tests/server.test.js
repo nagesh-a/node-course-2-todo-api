@@ -4,14 +4,21 @@ const request = require("supertest");
 const { app } = require("./../server");
 const { Todo } = require("./../models/todo");
 
+const todos = [{ text: "First test Todo" }, { text: "Second test Todo" }];
+
 // run before everuy test case
 beforeEach(done => {
-  Todo.remove({}).then(() => done());
+  //Todo.remove({}).then(() => done());
+  Todo.remove({})
+    .then(() => {
+      return Todo.insertMany(todos);
+    })
+    .then(() => done());
 });
 
 describe("Test Post request for Todo App", () => {
   it("should create new todo", done => {
-    var text = "Working on 99.99 minute timee block";
+    var text = "First test Todo";
     request(app)
       .post("/todos")
       .send({ text })
@@ -26,7 +33,7 @@ describe("Test Post request for Todo App", () => {
         // verify models
         Todo.find()
           .then(todos => {
-            expect(todos.length).toBe(1);
+            expect(todos.length).toBe(3);
             expect(todos[0].text).toBe(text);
             done();
           })
@@ -39,14 +46,29 @@ describe("Test Post request for Todo App", () => {
     request(app)
       .post("/todos")
       .send({ text })
-      .expect(400).end((err,resp)=>{
-        if(err){
+      .expect(400)
+      .end((err, resp) => {
+        if (err) {
           return done(err);
         }
-        Todo.find().then(todos=>{
-          expect(todos.length).toBe(0);
-          done();
-        }).catch(e=>done(e));
+        Todo.find()
+          .then(todos => {
+            expect(todos.length).toBe(2);
+            done();
+          })
+          .catch(e => done(e));
+      });
+  });
+});
+
+describe("GET /todos", () => {
+  it("should get all Todos", done => {
+    request(app)
+      .get("/todos")
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todos.length).toBe(2);
       })
+      .end(done);
   });
 });
