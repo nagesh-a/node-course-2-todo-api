@@ -44,28 +44,22 @@ app.listen(3000, () => {
 
 app.get("/todos/:id", (req, res) => {
   let id = req.params.id;
-
+  console.log(`----req.params---${id}-----------`);
   if (!ObjectID.isValid(id)) {
     console.log("ObjectID is Invalid");
     //  res.send({});
     return res.status(404).send({});
   } else if (ObjectID.isValid(id)) {
-    // validate id send 404, empty body
-    // query db, findById
-    // success
-    // if todo send it back, if no todo send 404 with empty body
-    // error- send empty body back
+    Todo.findById(id)
+      .then(todo => {
+        console.log("todo..", todo);
+        if (!todo) {
+          console.log("id not found");
 
-    //res.send(req.params);
-
-    User.findById(id)
-      .then(user => {
-        if (!user) {
-          //return console.log("id not found");
           return res.status(404).send({ text: "ID not found" });
         } else {
-          console.log(".....findById  user......", JSON.stringify(user, undefined, 2));
-          return res.status(200).send({user});
+          console.log(".....findById  user......", JSON.stringify(todo, undefined, 2));
+          return res.status(200).send({ todo });
         }
       })
       .catch(e => {

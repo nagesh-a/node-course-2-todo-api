@@ -1,10 +1,20 @@
 const expect = require("expect");
 const request = require("supertest");
+const { ObjectID } = require("mongodb");
 
 const { app } = require("./../server");
 const { Todo } = require("./../models/todo");
 
-const todos = [{ text: "First test Todo" }, { text: "Second test Todo" }];
+const todos = [
+  {
+    _id: new ObjectID(),
+    text: "First test Todo"
+  },
+  {
+    _id: new ObjectID(),
+    text: "Second test Todo"
+  }
+];
 
 // run before everuy test case
 beforeEach(done => {
@@ -67,8 +77,43 @@ describe("GET /todos", () => {
       .get("/todos")
       .expect(200)
       .expect(res => {
+        console.log("res.body.todos....", res.body.todos);
         expect(res.body.todos.length).toBe(2);
       })
+      .end(done);
+  });
+});
+//5a502acb6a281905e41ec20a
+//5a502acb6a281905e41ec20a
+describe("GET /todos/:id", () => {
+  it("should return to do doc", done => {
+    // request(app)
+    // .get(`/todos/${todos[0]._id.toHexString()`)
+    // .expect(200);
+    console.log(`----${todos[0]._id.toHexString()}-----------`);
+    request(app)
+      .get(`/todos/${todos[0]._id.toHexString()}`)
+      .expect(200)
+      .expect(res => {
+        console.log("--------", res.body.todo.text);
+        expect(res.body.todo.text).toBe(todos[0].text);
+      })
+      .end(done);
+  });
+  it("should return 404 if to do not found", done => {
+    console.log();
+    let newId = new ObjectID();
+    request(app)
+      .get(`/todos/${newId.toHexString()}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it("should return 404 : for non object id s ", done => {
+    console.log();
+    request(app)
+      .get(`/todos/12345678`)
+      .expect(404)
       .end(done);
   });
 });
