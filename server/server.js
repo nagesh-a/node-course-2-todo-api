@@ -42,7 +42,7 @@ app.listen(3000, () => {
   console.log("Started on Port 3000....");
 });
 
-<<<<<<< HEAD
+
 app.get("/todos/:id", (req, res) => {
   let id = req.params.id;
   console.log(`----req.params---${id}-----------`);
@@ -68,9 +68,7 @@ app.get("/todos/:id", (req, res) => {
       });
   }
 });
-
-||||||| merged common ancestors
-=======
+/*
 app.get("/todos/:id", (req, res) => {
   let id = req.params.id;
 
@@ -94,7 +92,7 @@ app.get("/todos/:id", (req, res) => {
           return res.status(404).send({ text: "ID not found" });
         } else {
           console.log(".....findById  user......", JSON.stringify(user, undefined, 2));
-          return res.status(200).send({user});
+          return res.status(200).send({ user });
         }
       })
       .catch(e => {
@@ -102,9 +100,10 @@ app.get("/todos/:id", (req, res) => {
       });
   }
 });
+*/
 
->>>>>>> 3563f91138695349b7222f5f4a37e83c7e916225
 module.exports = { app };
+
 /*
 
 // command for seting up test dependencies
