@@ -42,6 +42,7 @@ app.listen(3000, () => {
   console.log("Started on Port 3000....");
 });
 
+<<<<<<< HEAD
 app.get("/todos/:id", (req, res) => {
   let id = req.params.id;
   console.log(`----req.params---${id}-----------`);
@@ -68,6 +69,41 @@ app.get("/todos/:id", (req, res) => {
   }
 });
 
+||||||| merged common ancestors
+=======
+app.get("/todos/:id", (req, res) => {
+  let id = req.params.id;
+
+  if (!ObjectID.isValid(id)) {
+    console.log("ObjectID is Invalid");
+    //  res.send({});
+    return res.status(404).send({});
+  } else if (ObjectID.isValid(id)) {
+    // validate id send 404, empty body
+    // query db, findById
+    // success
+    // if todo send it back, if no todo send 404 with empty body
+    // error- send empty body back
+
+    //res.send(req.params);
+
+    User.findById(id)
+      .then(user => {
+        if (!user) {
+          //return console.log("id not found");
+          return res.status(404).send({ text: "ID not found" });
+        } else {
+          console.log(".....findById  user......", JSON.stringify(user, undefined, 2));
+          return res.status(200).send({user});
+        }
+      })
+      .catch(e => {
+        console.log("error:", res.status(400).send(e));
+      });
+  }
+});
+
+>>>>>>> 3563f91138695349b7222f5f4a37e83c7e916225
 module.exports = { app };
 /*
 
