@@ -13,6 +13,14 @@ const todos = [
   {
     _id: new ObjectID(),
     text: "Second test Todo"
+  },
+  {
+    id: new ObjectID(),
+    text: "Dont Give in at the morning"
+  },
+  {
+    id: new ObjectID(),
+    text: "Face Your Fears,Be aware there will be resistance from Mr X"
   }
 ];
 
@@ -43,7 +51,7 @@ describe("Test Post request for Todo App", () => {
         // verify models
         Todo.find()
           .then(todos => {
-            expect(todos.length).toBe(3);
+            expect(todos.length).toBe(5);
             expect(todos[0].text).toBe(text);
             done();
           })
@@ -63,7 +71,7 @@ describe("Test Post request for Todo App", () => {
         }
         Todo.find()
           .then(todos => {
-            expect(todos.length).toBe(2);
+            expect(todos.length).toBe(4);
             done();
           })
           .catch(e => done(e));
@@ -78,7 +86,7 @@ describe("GET /todos", () => {
       .expect(200)
       .expect(res => {
         console.log("res.body.todos....", res.body.todos);
-        expect(res.body.todos.length).toBe(2);
+        expect(res.body.todos.length).toBe(4);
       })
       .end(done);
   });
@@ -113,6 +121,46 @@ describe("GET /todos/:id", () => {
     console.log();
     request(app)
       .get(`/todos/12345678`)
+      .expect(404)
+      .end(done);
+  });
+});
+
+describe("DELETE /todos/:id", () => {
+  it("should a remove a todo ", done => {
+    let hexId = todos[1]._id.toHexString();
+
+    request(app)
+      .delete(`/todos/${hexId}`)
+      .expect(200)
+      .expect(resp => {
+        expect(resp.body.todo._id).toBe(hexId);
+      })
+      .end((error, resp) => {
+        return done(error);
+
+        Todo.findByid(hexId)
+          .then(todo => {
+            expect(null).toNotExist();
+            done();
+          })
+          .catch(error => {
+            done(e);
+          });
+      });
+  });
+
+  it("should return 404 if todo not found", done => {
+    let newId = new ObjectID();
+    request(app)
+      .delete(`/todos/${newId.toHexString()}`)
+      .expect(404)
+      .end(done);
+  });
+
+  it("should return 404 for invalid ID", done => {
+    request(app)
+      .delete(`/todos/12345678`)
       .expect(404)
       .end(done);
   });

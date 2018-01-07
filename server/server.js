@@ -78,7 +78,7 @@ app.delete("/todos/:id", (req, res) => {
           console.log("did not return anything");
           return res.status(404).send({ text: "ID NOT FOUND" });
         }
-        res.status(200).send(todo);
+        res.status(200).send({ todo });
       })
       .catch(e => {
         console.log("error on DELETE method :", res.status(400, send(e)));
