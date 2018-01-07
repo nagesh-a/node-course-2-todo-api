@@ -1,3 +1,6 @@
+require("./config/config.js")
+
+
 const _ = require("lodash");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -16,7 +19,7 @@ app.use(bodyParser.json());
 
 app.post("/todos", (req, res) => {
   var todo = new Todo({ text: req.body.text });
-
+  console.log("todo-------", todo);
   todo.save().then(
     document => {
       res.send(document);
